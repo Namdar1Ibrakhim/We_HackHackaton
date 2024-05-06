@@ -24,6 +24,8 @@ public class Ticket extends BaseEntity {
 
     private Status status;
 
+    private String ticketNumber;
+
     private Priority priority;
 
     private LocalDateTime dateTime;

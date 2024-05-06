@@ -12,7 +12,7 @@ public class TicketResponseDto {
 
     private Long id;
 
-    private Long ticketNumber;
+    private String ticketNumber;
 
     private Status status;
 

@@ -12,6 +12,7 @@ import com.example.demo.rabbitmq.RabbitMQProducer;
 import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.WindowRepository;
+import com.example.demo.service.QueueNumberGenerator;
 import com.example.demo.service.TicketService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +32,19 @@ public class TicketServiceImpl implements TicketService {
     private final WindowRepository windowRepository;
     private final UserRepository userRepository;
     private final TicketMapper ticketMapper;
+    private final QueueNumberGenerator queueNumberGenerator;
 
 
 
     @Override
     public synchronized TicketResponseDto generateTicket(String iin) {
         Ticket ticket = new Ticket();
+        ticket.setTicketNumber(queueNumberGenerator.generateQueueNumber());
         ticket.setIin(iin);
         ticket.setPriority(Priority.FIRST);
         ticket.setStatus(Status.WAITING);
         ticketRepository.save(ticket);
+
 
         producer.sendMessage(ticket.getId()+"");
 
